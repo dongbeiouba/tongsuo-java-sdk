@@ -401,13 +401,6 @@ public class SSLSessionContextTest {
         }
     }
 
-    private static void assertSSLSessionContextSizeAtLeast(int expected, TestSSLContext c) {
-        assertSSLSessionContextSizeAtLeast(expected, c.clientContext.getClientSessionContext(),
-            c.serverContext.getServerSessionContext());
-        assertSSLSessionContextSizeAtLeast(0, c.serverContext.getClientSessionContext(),
-            c.clientContext.getServerSessionContext());
-    }
-
     private static void assertSSLSessionContextSizeAtLeast(
         int expected, SSLSessionContext client, SSLSessionContext server) {
         assertSSLSessionContextSizeAtLeast(expected, client, false);

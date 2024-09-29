@@ -91,9 +91,6 @@ public class HelloExtension {
         result.parseData();
         return result;
     }
-    /**
-     * @throws IOException
-     */
     protected void parseData() throws IOException {}
     @Override
     public String toString() {

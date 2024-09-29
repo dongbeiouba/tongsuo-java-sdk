@@ -267,7 +267,7 @@ public final class TestUtils {
 
     public static PrivateKey readSM2PrivateKeyPemFile(String name)throws Exception{
         InputStream inputStream = openTestFile(name);
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         StringBuilder sb = new StringBuilder();
         String line = null;

@@ -436,7 +436,7 @@ public class SSLContextTest {
 
     public static class ThrowExceptionKeyAndTrustManagerFactoryProvider extends Provider {
         public ThrowExceptionKeyAndTrustManagerFactoryProvider() {
-            super("ThrowExceptionKeyAndTrustManagerProvider", 1.0,
+            super("ThrowExceptionKeyAndTrustManagerProvider", "1.0",
                     "SSLContextTest fake KeyManagerFactory  and TrustManagerFactory provider");
 
             put("TrustManagerFactory." + TrustManagerFactory.getDefaultAlgorithm(),

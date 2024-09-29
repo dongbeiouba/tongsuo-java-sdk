@@ -27,7 +27,7 @@ public abstract class AbstractAlgorithmParametersTest {
     private final TestHelper<AlgorithmParameters> helper;
     private final AlgorithmParameterSpec parameterData;
 
-    public AbstractAlgorithmParametersTest(String algorithmName,
+    protected AbstractAlgorithmParametersTest(String algorithmName,
             TestHelper<AlgorithmParameters> helper, AlgorithmParameterSpec parameterData) {
         this.algorithmName = algorithmName;
         this.helper = helper;

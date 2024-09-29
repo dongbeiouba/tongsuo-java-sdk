@@ -40,7 +40,7 @@ public class OpaqueProvider extends Provider {
   public static final String NAME = "OpaqueProvider";
 
   public OpaqueProvider() {
-    super(NAME, 1.0, "test provider");
+    super(NAME, "1.0", "test provider");
     put("Signature.NONEwithECDSA", OpaqueSignatureSpi.ECDSA.class.getName());
     put("Cipher.RSA/ECB/NoPadding", OpaqueCipherSpi.NoPadding.class.getName());
     put("Cipher.RSA/ECB/PKCS1Padding", OpaqueCipherSpi.PKCS1Padding.class.getName());

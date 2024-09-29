@@ -312,6 +312,7 @@ public abstract class OpenSSLAeadCipher extends OpenSSLCipher {
         return engine.getParameters();
     }
 
+    @Override
     protected AlgorithmParameterSpec getParameterSpec(AlgorithmParameters params)
             throws InvalidAlgorithmParameterException {
         return engine.getParameterSpec(params);

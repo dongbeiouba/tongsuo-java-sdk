@@ -11,6 +11,7 @@ package net.tongsuo;
 
 import javax.net.ssl.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.CountDownLatch;
@@ -105,8 +106,8 @@ public class TongsuoProviderEndToEndTest {
             try {
                 downLatch.countDown();
                 SSLSocket sslSocket = (SSLSocket) serverSocket.accept();
-                BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-                PrintWriter ioWriter = new PrintWriter(sslSocket.getOutputStream());
+                BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream(), StandardCharsets.UTF_8));
+                PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream(), StandardCharsets.UTF_8)));
                 String tmpMsg = ioReader.readLine();
                 if (tmpMsg != null) {
                     assertEquals(tmpMsg, HELLO_REQUEST);
@@ -128,8 +129,8 @@ public class TongsuoProviderEndToEndTest {
         Thread.sleep(2_000);
         SSLSocket clientSocket = buildSSLClientSocket(createClientSSLContext());
         BufferedReader ioReader = new BufferedReader(new InputStreamReader(
-                clientSocket.getInputStream()));
-        PrintWriter ioWriter = new PrintWriter(clientSocket.getOutputStream());
+                clientSocket.getInputStream(), StandardCharsets.UTF_8));
+        PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8)));
         ioWriter.println(HELLO_REQUEST);
         ioWriter.flush();
         assertEquals(ioReader.readLine(), HELLO_RESPONSE);

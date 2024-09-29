@@ -17,7 +17,7 @@ public abstract class OpenSSLAeadCipherSM4 extends OpenSSLAeadCipher {
     private static final int SM4_BLOCK_SIZE = 16;
     private static final int SM4_KEY_SIZE = 16;
 
-    public OpenSSLAeadCipherSM4(Mode mode) {
+    protected OpenSSLAeadCipherSM4(Mode mode) {
         super(mode);
     }
 

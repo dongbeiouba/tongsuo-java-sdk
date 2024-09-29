@@ -93,7 +93,7 @@ public final class TlcpKeyManagerImpl extends X509ExtendedKeyManager {
         }
     }
 
-    /*
+    /**
      * Returns the certificate chain associated with the given alias.
      *
      * @return the certificate chain (ordered with the user's certificate first
@@ -156,7 +156,7 @@ public final class TlcpKeyManagerImpl extends X509ExtendedKeyManager {
         return null;
     }
 
-    /*
+    /**
      * Choose an alias to authenticate the client side of an
      * <code>SSLEngine</code> connection given the public key type
      * and the list of certificate issuer authorities recognized by
@@ -213,7 +213,7 @@ public final class TlcpKeyManagerImpl extends X509ExtendedKeyManager {
         return null;
     }
 
-    /*
+    /**
      * Choose an alias to authenticate the server side of an
      * <code>SSLEngine</code> connection given the public key type
      * and the list of certificate issuer authorities recognized by

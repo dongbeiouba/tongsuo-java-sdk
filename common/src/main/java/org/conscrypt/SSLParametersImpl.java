@@ -479,19 +479,6 @@ final class SSLParametersImpl implements Cloneable {
         return newProtocols.toArray(EMPTY_STRING_ARRAY);
     }
 
-    private static String[] filterFromCipherSuites(String[] cipherSuites, Set<String> toRemove) {
-        if (cipherSuites == null || cipherSuites.length == 0) {
-            return cipherSuites;
-        }
-        ArrayList<String> newCipherSuites = new ArrayList<String>(cipherSuites.length);
-        for (String cipherSuite : cipherSuites) {
-            if (!toRemove.contains(cipherSuite)) {
-                newCipherSuites.add(cipherSuite);
-            }
-        }
-        return newCipherSuites.toArray(EMPTY_STRING_ARRAY);
-    }
-
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     /**

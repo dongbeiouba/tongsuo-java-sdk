@@ -17,7 +17,7 @@ public class BrokenProvider extends Provider {
   public static final String NAME = "BrokenProvider";
 
   public BrokenProvider() {
-    super(NAME, 1.0, "A broken provider");
+    super(NAME, "1.0", "A broken provider");
     put("Signature.NONEwithECDSA", BrokenSignatureSpi.ECDSA.class.getName());
   }
 

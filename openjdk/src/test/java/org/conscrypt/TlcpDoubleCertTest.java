@@ -2,9 +2,12 @@ package org.conscrypt;
 
 import javax.net.ssl.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
@@ -33,17 +36,15 @@ public class TlcpDoubleCertTest {
     private final String HTTP_1_1 = "http/1.1";
     private final String HTTP_2 = "h2";
     private final String SNI_HOST_NAME = "example.com";
-    private final Map<String, Object> CIPHER_SUIT_MAP = new HashMap();
+    private final Map<String, Object> CIPHER_SUIT_MAP = new HashMap<>();
 
     private final String SERVER_ENC_ALIAS = "SERVER_ENC_ENTRY";
     private final String SERVER_SIGN_ALIAS = "SERVER_SIGN_ENTRY";
     private final String CLIENT_ENC_ALIAS = "CLIENT_ENC_ENTRY";
     private final String CLIENT_SIGN_ALIAS = "CLIENT_SIGN_ENTRY";
     // root ca.
-    private final String CA_KEY_PATH = "tlcp_cert/ca.key";
     private final String CA_CERT_PATH = "tlcp_cert/ca.crt";
     // sub ca.
-    private final String SUB_CA_KEY_PATH = "tlcp_cert/sub_ca.key";
     private final String SUB_CA_CERT_PATH = "tlcp_cert/sub_ca.crt";
     // client enc cert and key.
     private final String CLIENT_ENC_KEY_PATH = "tlcp_cert/client_enc.key";
@@ -133,7 +134,7 @@ public class TlcpDoubleCertTest {
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("TlcpKeyManagerFactory", new TongsuoProvider());
         kmf.init(ks, EMPTY_PASSWORD);
-        KeyManager clientKey = (kmf.getKeyManagers())[0];
+        KeyManager clientKey = kmf.getKeyManagers()[0];
         if (clientKey instanceof TlcpKeyManagerImpl) {
             TlcpKeyManagerImpl tlcpKeyManager = (TlcpKeyManagerImpl) clientKey;
             clientKeyManager = new KeyManager[]{clientKey};
@@ -169,7 +170,7 @@ public class TlcpDoubleCertTest {
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("TlcpKeyManagerFactory", new TongsuoProvider());
         kmf.init(ks, EMPTY_PASSWORD);
-        KeyManager serverKey = (kmf.getKeyManagers())[0];
+        KeyManager serverKey = kmf.getKeyManagers()[0];
         if (serverKey instanceof TlcpKeyManagerImpl) {
             TlcpKeyManagerImpl tlcpKeyManager = (TlcpKeyManagerImpl) serverKey;
             serverKeyManager = new KeyManager[]{serverKey};
@@ -218,8 +219,8 @@ public class TlcpDoubleCertTest {
                 downLatch.countDown();
                 for (int i = 0; i < CIPHER_SUIT_MAP.size(); i++) {
                     SSLSocket sslSocket = (SSLSocket) serverSocket.accept();
-                    BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-                    PrintWriter ioWriter = new PrintWriter(sslSocket.getOutputStream());
+                    BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream(), StandardCharsets.UTF_8));
+                    PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream(), StandardCharsets.UTF_8)));
                     String tmpMsg = ioReader.readLine();
                     if (tmpMsg != null) {
                         assertEquals(tmpMsg, HELLO_REQUEST);
@@ -243,8 +244,8 @@ public class TlcpDoubleCertTest {
         for (String key : ciphers) {
             SSLSocket clientSocket0 = buildSSLClientSocket(new String[]{key}, setEnableCipher);
             BufferedReader ioReader = new BufferedReader(new InputStreamReader(
-                    clientSocket0.getInputStream()));
-            PrintWriter ioWriter = new PrintWriter(clientSocket0.getOutputStream());
+                    clientSocket0.getInputStream(), StandardCharsets.UTF_8));
+            PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket0.getOutputStream(), StandardCharsets.UTF_8)));
             ioWriter.println(HELLO_REQUEST);
             ioWriter.flush();
             assertEquals(ioReader.readLine(), HELLO_RESPONSE);
@@ -268,8 +269,8 @@ public class TlcpDoubleCertTest {
                 downLatch.countDown();
                 for (int i = 0x0; i < 2; i++) {
                     SSLSocket sslSocket = (SSLSocket) svrSocket.accept();
-                    BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-                    PrintWriter ioWriter = new PrintWriter(sslSocket.getOutputStream());
+                    BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream(), StandardCharsets.UTF_8));
+                    PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream(), StandardCharsets.UTF_8)));
                     String tmpMsg = ioReader.readLine();
                     if (tmpMsg != null) {
                         assertEquals(tmpMsg, HELLO_REQUEST);
@@ -296,23 +297,23 @@ public class TlcpDoubleCertTest {
         // Wait for server startup.
         Thread.sleep(2_000);
         BufferedReader ioReader = new BufferedReader(new InputStreamReader(
-                sslSocket.getInputStream()));
-        PrintWriter ioWriter = new PrintWriter(sslSocket.getOutputStream());
+                sslSocket.getInputStream(), StandardCharsets.UTF_8));
+        PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream(), StandardCharsets.UTF_8)));
         ioWriter.println(HELLO_REQUEST);
         ioWriter.flush();
         assertEquals(ioReader.readLine(), HELLO_RESPONSE);
-        String sessionID = new String(sslSocket.getSession().getId());
+        String sessionID = new String(sslSocket.getSession().getId(), StandardCharsets.UTF_8);
         Thread.sleep(2_000);
         sslSocket.close();
 
         SSLSocket sslSocket0 = (SSLSocket) sslCntFactory.createSocket("localhost", port);
         ioReader = new BufferedReader(new InputStreamReader(
-                sslSocket0.getInputStream()));
-        ioWriter = new PrintWriter(sslSocket0.getOutputStream());
+                sslSocket0.getInputStream(), StandardCharsets.UTF_8));
+        ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket0.getOutputStream(), StandardCharsets.UTF_8)));
         ioWriter.println(HELLO_REQUEST);
         ioWriter.flush();
         assertEquals(ioReader.readLine(), HELLO_RESPONSE);
-        assertEquals(sessionID, new String(sslSocket0.getSession().getId()));
+        assertEquals(sessionID, new String(sslSocket0.getSession().getId(), StandardCharsets.UTF_8));
         Thread.sleep(2_000);
         sslSocket.close();
     }
@@ -355,8 +356,8 @@ public class TlcpDoubleCertTest {
                 for (int i = 0x0; i < 1; i++) {
                     SSLSocket sslSocket = (SSLSocket) svrSocket.accept();
                     Conscrypt.setApplicationProtocols(sslSocket, new String[] {HTTP_2});
-                    BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-                    PrintWriter ioWriter = new PrintWriter(sslSocket.getOutputStream());
+                    BufferedReader ioReader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream(), StandardCharsets.UTF_8));
+                    PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream(), StandardCharsets.UTF_8)));
                     SSLSession session = (SSLSession) sslSocket.getClass().getSuperclass().getDeclaredMethod("getActiveSession").invoke(sslSocket);
                     String hostname = (String) session.getClass().getDeclaredMethod("getRequestedServerName").invoke(session);
                     assertEquals(hostname, SNI_HOST_NAME);
@@ -387,8 +388,8 @@ public class TlcpDoubleCertTest {
         // Wait for server startup.
         Thread.sleep(2_000);
         BufferedReader ioReader = new BufferedReader(new InputStreamReader(
-                sslSocket.getInputStream()));
-        PrintWriter ioWriter = new PrintWriter(sslSocket.getOutputStream());
+                sslSocket.getInputStream(), StandardCharsets.UTF_8));
+        PrintWriter ioWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream(), StandardCharsets.UTF_8)));
         ioWriter.println(HELLO_REQUEST);
         ioWriter.flush();
         assertEquals(ioReader.readLine(), HELLO_RESPONSE);

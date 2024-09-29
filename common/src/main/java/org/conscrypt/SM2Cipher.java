@@ -254,7 +254,8 @@ public class SM2Cipher extends CipherSpi {
 
     private static final class Buffer extends ByteArrayOutputStream {
 
-        public void reset() {
+        @Override
+        public synchronized void reset() {
             Arrays.fill(buf, (byte)0);
             super.reset();
         }

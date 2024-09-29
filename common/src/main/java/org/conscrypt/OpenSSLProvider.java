@@ -78,7 +78,7 @@ public class OpenSSLProvider extends Provider {
                     String defaultTlsProtocol,
                     double version,
                     String info) {
-        super(providerName, version, info);
+        super(providerName, String.valueOf(version), info);
 
         // Ensure that the native library has been loaded.
         NativeCrypto.checkAvailability();

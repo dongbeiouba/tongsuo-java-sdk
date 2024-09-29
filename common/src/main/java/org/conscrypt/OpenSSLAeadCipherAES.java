@@ -16,7 +16,7 @@ import java.util.Locale;
 public abstract class OpenSSLAeadCipherAES extends OpenSSLAeadCipher {
     private static final int AES_BLOCK_SIZE = 16;
 
-    public OpenSSLAeadCipherAES(Mode mode) {
+    protected OpenSSLAeadCipherAES(Mode mode) {
         super(mode);
     }
 
@@ -36,7 +36,7 @@ public abstract class OpenSSLAeadCipherAES extends OpenSSLAeadCipher {
     }
 
     public static abstract class AES_128 extends OpenSSLAeadCipherAES {
-        public AES_128(Mode mode) {
+        protected AES_128(Mode mode) {
             super(mode);
         }
 
@@ -62,7 +62,7 @@ public abstract class OpenSSLAeadCipherAES extends OpenSSLAeadCipher {
     }
 
     public static abstract class AES_192 extends OpenSSLAeadCipherAES {
-        public AES_192(Mode mode) {
+        protected AES_192(Mode mode) {
             super(mode);
         }
 
@@ -88,7 +88,7 @@ public abstract class OpenSSLAeadCipherAES extends OpenSSLAeadCipher {
     }
 
     public static abstract class AES_256 extends OpenSSLAeadCipherAES {
-        public AES_256(Mode mode) {
+        protected AES_256(Mode mode) {
             super(mode);
         }
 

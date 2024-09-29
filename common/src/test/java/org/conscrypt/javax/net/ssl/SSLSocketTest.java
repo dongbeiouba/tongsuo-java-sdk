@@ -38,6 +38,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -1094,7 +1095,7 @@ public class SSLSocketTest {
                         SSLSocket sslSocket = (SSLSocket)serverSocket.accept();
                         sslSocket.startHandshake();
                         InputStream inputStream = sslSocket.getInputStream();
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                         BufferedReader in = new BufferedReader(inputStreamReader);
                         String msg = null;
                         char[] cbuf = new char[1024];
@@ -1127,7 +1128,7 @@ public class SSLSocketTest {
         client.setEnabledProtocols(new String[]{"TLSv1.3"});
         client.startHandshake();
         OutputStream outputStream = client.getOutputStream();
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(outputStreamWriter);
         out.write("Bye");
         out.flush();
@@ -1246,7 +1247,7 @@ public class SSLSocketTest {
                         SSLSocket sslSocket = (SSLSocket)serverSocket.accept();
                         sslSocket.startHandshake();
                         InputStream inputStream = sslSocket.getInputStream();
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                         BufferedReader in = new BufferedReader(inputStreamReader);
                         String msg = null;
                         char[] cbuf = new char[1024];
@@ -1291,7 +1292,7 @@ public class SSLSocketTest {
         client.setEnabledProtocols(new String[]{"TLSv1.3"});
         client.startHandshake();
         OutputStream outputStream = client.getOutputStream();
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(outputStreamWriter);
         out.write("Hello");
         out.flush();
